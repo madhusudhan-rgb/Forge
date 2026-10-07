@@ -30,6 +30,7 @@ add_executable(untitled1
         Components/agent.cpp
         Components/sidebar.h
         Components/sidebar.cpp
+        assets/icons.qrc
 )
 
 # FIX: Fixed the colon typo (Qt6:Svg -> Qt6::Svg) and added SvgWidgets

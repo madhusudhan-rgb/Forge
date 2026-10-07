@@ -17,6 +17,10 @@ class Sidebar : public QFrame {
 public:
     explicit Sidebar(QWidget *parent = nullptr);
 
+signals:
+    void fileTreeToggleRequested();
+    void settingsRequested();
+
 private:
     void setupLayout();
     void applyStyles();

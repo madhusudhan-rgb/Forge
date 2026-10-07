@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="chatbubble-ellipses-outline.svg">icons/ionicons/chatbubble-ellipses-outline.svg</file>
+        <file alias="folder-outline.svg">icons/ionicons/folder-outline.svg</file>
+        <file alias="terminal-outline.svg">icons/ionicons/terminal-outline.svg</file>
+        <file alias="apps-outline.svg">icons/ionicons/apps-outline.svg</file>
+        <file alias="settings-outline.svg">icons/ionicons/settings-outline.svg</file>
+    </qresource>
+</RCC>

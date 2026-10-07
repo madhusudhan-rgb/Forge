@@ -15,6 +15,7 @@ public :
 private :
     void setupMenuBar();
     void openFile(const QString &filePath);
+    void openSettings();
     QTextEdit *codeEditor = nullptr;
     FIleExplorer *sidebar = nullptr; // Kept so the tree can be hidden/shown again
     QAction *fileTreeAction = nullptr; // View > File Tree toggle, kept in sync with the sidebar

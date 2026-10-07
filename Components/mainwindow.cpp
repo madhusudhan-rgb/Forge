@@ -66,6 +66,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     // Initialize the menu bar
     setupMenuBar();
+    connect(neoSidebar, &Sidebar::fileTreeToggleRequested, this, [this]() {
+        if (fileTreeAction) {
+            fileTreeAction->toggle();
+        }
+    });
 }
 
 void MainWindow::setupMenuBar() {
@@ -162,6 +167,11 @@ void MainWindow::setupMenuBar() {
                         SettingsDialog dialog(this);
                         dialog.exec();
                 });
+            connect(sidebar, &SettingsDialog::closeRequested, this, [this]() {
+                if (viewAction && viewAction->isChecked()) {
+                    viewAction->setChecked(false);
+                }
+            });
             QAction *aboutAction = viewMenu->addAction("A&bout");
             connect(aboutAction, &QAction::triggered, this, [this]() {
                 int reply = QMessageBox::question(this,

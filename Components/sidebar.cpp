@@ -2,7 +2,7 @@
 // Created by mt on 10/6/26.
 //
 #include "sidebar.h"
-
+#include "../settingswindow.h"
 Sidebar::Sidebar(QWidget *parent) : QFrame(parent) {
     // 1. Shrink width from 250px down to a sharp, compact navbar size
     setFixedWidth(60);
@@ -26,26 +26,26 @@ void Sidebar::setupLayout() {
     agentBtn->setFixedSize(42, 42); // Perfect square box shape layout
     agentBtn->setCursor(Qt::PointingHandCursor);
     agentBtn->setToolTip("Neo Agent Canvas"); // Hover description text hint
-
-    // agentBtn->setIcon(QIcon(":/icons/agent.png"));
-    // agentBtn->setIconSize(QSize(24, 24));
+    agentBtn->setIcon(QIcon(":/icons/chatbubble-ellipses-outline.svg"));
+    agentBtn->setIconSize(QSize(24, 24));
     m_layout->addWidget(agentBtn);
 
-    // Icon Button 2: E.g., Environment Execution Module / Scripts
-    QPushButton *terminalRunBtn = new QPushButton(this);
-    terminalRunBtn->setFixedSize(42, 42);
-    terminalRunBtn->setCursor(Qt::PointingHandCursor);
-    terminalRunBtn->setToolTip("Terminal");
-    terminalRunBtn->setIcon(QIcon(":/icons/terminal.png"));
-    terminalRunBtn->setIconSize(QSize(24, 24));
-    m_layout->addWidget(terminalRunBtn);
+    QPushButton *fileTreeButton = new QPushButton(this);
+    fileTreeButton->setFixedSize(42, 42);
+    fileTreeButton->setCursor(Qt::PointingHandCursor);
+    fileTreeButton->setToolTip("File Tree");
+    fileTreeButton->setIcon(QIcon(":/icons/folder-outline.svg"));
+    fileTreeButton->setIconSize(QSize(24, 24));
+    connect(fileTreeButton, &QPushButton::clicked, this, &Sidebar::fileTreeToggleRequested);
+    m_layout->addWidget(fileTreeButton);
 
     // Icon Button 3: E.g., Local Extensions / Custom Automation Blueprints
     QPushButton *automationBtn = new QPushButton(this);
     automationBtn->setFixedSize(42, 42);
     automationBtn->setCursor(Qt::PointingHandCursor);
     automationBtn->setToolTip("Automation Tasks");
-
+    automationBtn->setIcon(QIcon(":/icons/apps-outline.svg"));
+    automationBtn->setIconSize(QSize(24, 24));
     m_layout->addWidget(automationBtn);
 
     // The Layout Spacer: Pushes your core utility icons to the top
@@ -58,8 +58,9 @@ void Sidebar::setupLayout() {
     m_settingsButton->setFixedSize(42, 42);
     m_settingsButton->setCursor(Qt::PointingHandCursor);
     m_settingsButton->setToolTip("System Preferences");
-    m_settingsButton->setIcon(QIcon(":/icons/settings.png"));
+    m_settingsButton->setIcon(QIcon(":/icons/settings-outline.svg"));
     m_settingsButton->setIconSize(QSize(24, 24));
+    connect(m_settingsButton, &QPushButton::clicked, this, &Sidebar::settingsRequested);
     m_layout->addWidget(m_settingsButton);
 }
 
