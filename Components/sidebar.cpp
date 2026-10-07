@@ -2,7 +2,7 @@
 // Created by mt on 10/6/26.
 //
 #include "sidebar.h"
-#include "../settingswindow.h"
+
 Sidebar::Sidebar(QWidget *parent) : QFrame(parent) {
     // 1. Shrink width from 250px down to a sharp, compact navbar size
     setFixedWidth(60);
