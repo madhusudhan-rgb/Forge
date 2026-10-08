@@ -22,13 +22,13 @@ void Sidebar::setupLayout() {
     // --- TOP SECTION ACTION ICONS ---
 
     // Icon Button 1: E.g., Neo Core Agent / Chat Prompt Interface
-    QPushButton *agentBtn = new QPushButton(this);
-    agentBtn->setFixedSize(42, 42); // Perfect square box shape layout
-    agentBtn->setCursor(Qt::PointingHandCursor);
-    agentBtn->setToolTip("Neo Agent Canvas"); // Hover description text hint
-    agentBtn->setIcon(QIcon(":/icons/chatbubble-ellipses-outline.svg"));
-    agentBtn->setIconSize(QSize(24, 24));
-    m_layout->addWidget(agentBtn);
+    // QPushButton *agentBtn = new QPushButton(this);
+    // agentBtn->setFixedSize(42, 42); // Perfect square box shape layout
+    // agentBtn->setCursor(Qt::PointingHandCursor);
+    // agentBtn->setToolTip("Neo Agent Canvas"); // Hover description text hint
+    // agentBtn->setIcon(QIcon(":/icons/chatbubble-ellipses-outline.svg"));
+    // agentBtn->setIconSize(QSize(24, 24));
+    // m_layout->addWidget(agentBtn);
 
     QPushButton *fileTreeButton = new QPushButton(this);
     fileTreeButton->setFixedSize(42, 42);
@@ -40,13 +40,13 @@ void Sidebar::setupLayout() {
     m_layout->addWidget(fileTreeButton);
 
     // Icon Button 3: E.g., Local Extensions / Custom Automation Blueprints
-    QPushButton *automationBtn = new QPushButton(this);
-    automationBtn->setFixedSize(42, 42);
-    automationBtn->setCursor(Qt::PointingHandCursor);
-    automationBtn->setToolTip("Automation Tasks");
-    automationBtn->setIcon(QIcon(":/icons/apps-outline.svg"));
-    automationBtn->setIconSize(QSize(24, 24));
-    m_layout->addWidget(automationBtn);
+    // QPushButton *automationBtn = new QPushButton(this);
+    // automationBtn->setFixedSize(42, 42);
+    // automationBtn->setCursor(Qt::PointingHandCursor);
+    // automationBtn->setToolTip("Automation Tasks");
+    // automationBtn->setIcon(QIcon(":/icons/apps-outline.svg"));
+    // automationBtn->setIconSize(QSize(24, 24));
+    // m_layout->addWidget(automationBtn);
 
     // The Layout Spacer: Pushes your core utility icons to the top
     // and forces your preference controls down to stay at the absolute bottom.

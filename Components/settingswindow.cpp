@@ -375,47 +375,50 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent) {
     rootLayout->setContentsMargins(12, 12, 12, 12);
     rootLayout->setSpacing(12);
 
-    // 1. Left Sidebar Navigation
-    auto *sidebar = new QListWidget(this);
-    sidebar->setFixedWidth(140);
-    sidebar->addItem("Model ID");
-    sidebar->addItem("General");
-    sidebar->setCurrentRow(0);
-    rootLayout->addWidget(sidebar);
-
-    // 2. Right Pane: Stacked Pages & Footer
     auto *rightPaneLayout = new QVBoxLayout();
-    auto *pageStack = new QStackedWidget(this);
+    rightPaneLayout->setContentsMargins(0, 0, 0, 0);
 
-    // --- Page 1: AI Models Configuration ---
-    auto *aiPage = new QWidget();
-    auto *aiPageLayout = new QVBoxLayout(aiPage);
-    aiPageLayout->setContentsMargins(0, 0, 0, 0);
+    // Left Sidebar Navigation
+    // auto *sidebar = new QListWidget(this);
+    // sidebar->setFixedWidth(140);
+    // sidebar->addItem("Model ID from provider");
+    // sidebar->addItem("General");
+    // sidebar->setCurrentRow(0);
+    // rootLayout->addWidget(sidebar);
+
+    // // 2. Right Pane: Stacked Pages & Footer
+    // auto *rightPaneLayout = new QVBoxLayout();
+    // auto *pageStack = new QStackedWidget(this);
+    //
+    // // --- Page 1: AI Models Configuration ---
+    // auto *aiPage = new QWidget();
+    // auto *aiPageLayout = new QVBoxLayout(aiPage);
+    // aiPageLayout->setContentsMargins(0, 0, 0, 0);
 
     // Group box for API / Provider settings
-    auto *apiGroup = new QGroupBox("LLM && Provider Configuration", aiPage);
-    auto *formLayout = new QFormLayout(apiGroup);
-    formLayout->setSpacing(10);
-    formLayout->setLabelAlignment(Qt::AlignRight);
-
-    // Provider Dropdown or Input
-    auto *providerCombo = new QComboBox(apiGroup);
-    providerCombo->addItems({"Custom / Local", "OpenAI", "Anthropic", "Groq", "Other"});
-    formLayout->addRow("Provider:", providerCombo);
-
-    // Endpoint URL input
-    auto *endpointInput = new QLineEdit(apiGroup);
-    endpointInput->setPlaceholderText("http://localhost:11434 or API base URL");
-    formLayout->addRow("Endpoint:", endpointInput);
-
-    // API Key input
-    auto *apiKeyInput = new QLineEdit(apiGroup);
-    apiKeyInput->setEchoMode(QLineEdit::Password);
-    apiKeyInput->setPlaceholderText("sk-...");
-    formLayout->addRow("API Key:", apiKeyInput);
-
-    aiPageLayout->addWidget(apiGroup);
-    aiPageLayout->addStretch(); // Pins the group box neatly to the top
+    // auto *apiGroup = new QGroupBox("LLM && Provider Configuration", aiPage);
+    // auto *formLayout = new QFormLayout(apiGroup);
+    // formLayout->setSpacing(10);
+    // formLayout->setLabelAlignment(Qt::AlignRight);
+    //
+    // // Provider Dropdown or Input
+    // auto *providerCombo = new QComboBox(apiGroup);
+    // providerCombo->addItems({"Custom / Local", "OpenAI", "Anthropic", "Groq", "Other"});
+    // formLayout->addRow("Provider:", providerCombo);
+    //
+    // // Endpoint URL input
+    // auto *endpointInput = new QLineEdit(apiGroup);
+    // endpointInput->setPlaceholderText("http://localhost:11434 or API base URL");
+    // formLayout->addRow("Endpoint:", endpointInput);
+    //
+    // // API Key input
+    // auto *apiKeyInput = new QLineEdit(apiGroup);
+    // apiKeyInput->setEchoMode(QLineEdit::Password);
+    // apiKeyInput->setPlaceholderText("sk-...");
+    // formLayout->addRow("API Key:", apiKeyInput);
+    //
+    // aiPageLayout->addWidget(apiGroup);
+    // aiPageLayout->addStretch(); // Pins the group box neatly to the top
 
     // General / Editor Settings
     // --- Page 2: General / Editor Settings ---
@@ -446,20 +449,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent) {
     generalLayout->addWidget(generalGroup);
     generalLayout->addStretch();
 
-
-    // Add pages to stacked widget
-    pageStack->addWidget(aiPage);
-    pageStack->addWidget(generalPage);
-    rightPaneLayout->addWidget(pageStack);
-
-    // Wire sidebar navigation to page changes
-    connect(sidebar, &QListWidget::currentRowChanged, pageStack, &QStackedWidget::setCurrentIndex);
-
-    // 3. Dialog Button Box (Bottom Right)
+    rightPaneLayout->addWidget(generalPage);
     auto *buttonBox = new QDialogButtonBox(
         QDialogButtonBox::Apply | QDialogButtonBox::Reset | QDialogButtonBox::Close, this);
     rightPaneLayout->addWidget(buttonBox);
-
     rootLayout->addLayout(rightPaneLayout);
 
     // Style the dialog right away, but only while no app-wide theme has been
@@ -471,7 +464,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent) {
 
     //Button Actions
     connect(buttonBox, &QDialogButtonBox::clicked, this,
-            [this, apiKeyInput, endpointInput, providerCombo, buttonBox ,modeCombo](QAbstractButton *button) {
+            [this, buttonBox ,modeCombo](QAbstractButton *button) {
                 auto role = buttonBox->buttonRole(button);
 
                 if (role == QDialogButtonBox::ApplyRole) {
@@ -479,9 +472,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent) {
                     QMessageBox::information(this, "Settings", "Settings applied successfully.", QMessageBox::Ok);
                     this->accept();
                 } else if (role == QDialogButtonBox::ResetRole) {
-                    apiKeyInput->clear();
-                    endpointInput->clear();
-                    providerCombo->setCurrentIndex(0);
+
                     modeCombo->setCurrentIndex(0);
                 } else if (role == QDialogButtonBox::RejectRole) {
                     this->reject();
