@@ -71,6 +71,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
             fileTreeAction->toggle();
         }
     });
+    connect(neoSidebar, &Sidebar::settingsRequested, this, &MainWindow::openSettings);
 }
 
 void MainWindow::setupMenuBar() {
@@ -102,36 +103,13 @@ void MainWindow::setupMenuBar() {
             }
         });
 
-            QAction *sAveAction = fileMenu->addAction("&Save as");
-            connect(sAveAction, &QAction::triggered, this, [this]() {
-                QString filePath = QFileDialog::getSaveFileName(this, "Save File As", "", "Text Files (*.txt);;All Files (*)");
-                if (!filePath.isEmpty()) {
-                    QFile file(filePath);
-                    if (file.open(QFile::WriteOnly | QFile::Text)) {
-                        QTextStream out(&file);
-                        out << codeEditor->toPlainText();
-                        file.close();
-                        QMessageBox::information(this, "Success", "File successfully saved!");
-                    } else {
-                        QMessageBox::warning(this, "Error", "Could not save file to path.");
-                    }
-                }
-            });
+        QAction *saveAsAction = fileMenu->addAction("Save &As...");
+        saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
+        connect(saveAsAction, &QAction::triggered, this, &MainWindow::saveFileAs);
+
         QAction *saveAction = fileMenu->addAction("&Save");
-            connect(saveAction, &QAction::triggered, this, [this]() {
-                QString filePath = QFileDialog::getSaveFileName(this, "Save File", "", "Text Files (*.txt);;All Files (*)");
-                if (!filePath.isEmpty()) {
-                    QFile file(filePath);
-                    if (file.open(QFile::WriteOnly | QFile::Text)) {
-                        QTextStream out(&file);
-                        out << codeEditor->toPlainText();
-                        file.close();
-                        QMessageBox::information(this, "Success", "File successfully saved!");
-                    } else {
-                        QMessageBox::warning(this, "Error", "Could not save file to path.");
-                    }
-                }
-            });
+        saveAction->setShortcut(QKeySequence::Save);
+        connect(saveAction, &QAction::triggered, this, &MainWindow::saveFile);
 
 
                 QAction *exitAction = fileMenu->addAction("E&xit");
@@ -163,15 +141,7 @@ void MainWindow::setupMenuBar() {
                 }
             });
             QAction *viewAction = viewMenu->addAction("Settings");
-                connect(viewAction, &QAction::triggered, this, [this]() {
-                        SettingsDialog dialog(this);
-                        dialog.exec();
-                });
-            connect(sidebar, &SettingsDialog::closeRequested, this, [this]() {
-                if (viewAction && viewAction->isChecked()) {
-                    viewAction->setChecked(false);
-                }
-            });
+            connect(viewAction, &QAction::triggered, this, &MainWindow::openSettings);
             QAction *aboutAction = viewMenu->addAction("A&bout");
             connect(aboutAction, &QAction::triggered, this, [this]() {
                 int reply = QMessageBox::question(this,
@@ -184,6 +154,45 @@ void MainWindow::setupMenuBar() {
             });
 }
 
+void MainWindow::openSettings() {
+    SettingsDialog dialog(this);
+    dialog.exec();
+}
+
+void MainWindow::saveFile() {
+    if (currentFilePath.isEmpty()) {
+        saveFileAs();
+        return;
+    }
+
+    writeFile(currentFilePath);
+}
+
+void MainWindow::saveFileAs() {
+    const QString filePath = QFileDialog::getSaveFileName(
+        this, "Save File As", currentFilePath, "Text Files (*.txt);;All Files (*)");
+    if (!filePath.isEmpty() && writeFile(filePath)) {
+        currentFilePath = filePath;
+    }
+}
+
+bool MainWindow::writeFile(const QString &filePath) {
+    QFile file(filePath);
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        QMessageBox::warning(this, "Strata", "Could not save file:\n" + file.errorString());
+        return false;
+    }
+
+    QTextStream out(&file);
+    out << codeEditor->toPlainText();
+    out.flush();
+    if (out.status() != QTextStream::Ok || file.error() != QFile::NoError) {
+        QMessageBox::warning(this, "Strata", "Could not save file:\n" + file.errorString());
+        return false;
+    }
+    return true;
+}
+
 void MainWindow::openFile(const QString &filePath) {
     QFile file(filePath);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
@@ -193,4 +202,5 @@ void MainWindow::openFile(const QString &filePath) {
     QTextStream in(&file);
     codeEditor->setPlainText(in.readAll());
     file.close();
+    currentFilePath = filePath;
 }
