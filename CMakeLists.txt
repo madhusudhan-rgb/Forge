@@ -3,6 +3,7 @@ project(untitled1 VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+include(GNUInstallDirs)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -32,6 +33,7 @@ add_executable(untitled1
         Components/sidebar.cpp
         assets/icons.qrc
 )
+set_target_properties(untitled1 PROPERTIES OUTPUT_NAME strata)
 
 # FIX: Fixed the colon typo (Qt6:Svg -> Qt6::Svg) and added SvgWidgets
 target_link_libraries(untitled1 PRIVATE
@@ -41,3 +43,20 @@ target_link_libraries(untitled1 PRIVATE
         Qt6::Svg
         Qt6::SvgWidgets
 )
+
+install(TARGETS untitled1
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+install(FILES packaging/strata.desktop
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/applications
+)
+
+set(CPACK_PACKAGE_NAME "strata")
+set(CPACK_PACKAGE_VENDOR "Strata")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A lightweight code editor built with Qt 6")
+set(CPACK_PACKAGE_CONTACT "Strata maintainers")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Strata maintainers")
+set(CPACK_DEBIAN_PACKAGE_SECTION "editors")
+set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+set(CPACK_GENERATOR "DEB")
+include(CPack)

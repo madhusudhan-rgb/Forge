@@ -41,7 +41,7 @@ The editor is currently in early development.
 
 ## Requirements
 
-- C++ compiler with C++17 support
+- C++ compiler with C++26 support
 - Qt 6
 - CMake
 
@@ -52,3 +52,19 @@ The editor is currently in early development.
 ```bash
 git clone <your-repository-url>
 cd <your-project-folder>
+```
+
+### Build a Debian package
+
+Install CMake, Ninja, a C++26-capable compiler, Qt 6 development libraries
+(`qt6-base-dev` and `qt6-svg-dev` on Debian/Ubuntu), and `dpkg-dev`. Then run:
+
+```bash
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+cd build
+cpack -G DEB
+```
+
+The `.deb` package will be created in `build/`. Install it with
+`sudo apt install ./strata-*.deb`.

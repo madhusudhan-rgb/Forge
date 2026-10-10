@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Strata
+GenericName=Text Editor
+Comment=A lightweight code editor
+Exec=strata %F
+Terminal=false
+Categories=Development;TextEditor;
+StartupNotify=true

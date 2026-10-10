@@ -1,0 +1,9 @@
+Architecture: amd64
+Depends: libc6 (>= 2.34), libgcc-s1 (>= 3.0), libqt6core6t64 (>= 6.10.2), libqt6gui6 (>= 6.1.2), libqt6widgets6 (>= 6.3.0), libstdc++6 (>= 5)
+Description: A lightweight code editor built with Qt 6
+Maintainer: Strata maintainers
+Package: strata
+Priority: optional
+Section: editors
+Version: 1.0
+Installed-Size: 128
